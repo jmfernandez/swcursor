@@ -53,41 +53,39 @@ swcursor_window_init(SWCursorWindow *self)
 	swcursor_window_setup_visuals(GTK_WIDGET (self));
 }
 
-SWCursorWindow *swcursor_window_new(void)
+SWCursorWindow*
+swcursor_window_new(void)
 {
 	return g_object_new(SWCURSOR_TYPE_WINDOW, "type", GTK_WINDOW_TOPLEVEL, NULL);
 }
 
-static gboolean swcursor_window_draw(GtkWidget *widget, cairo_t *cr)
+static gboolean
+swcursor_window_draw(GtkWidget *widget, cairo_t *cr)
 {
 	SWCursorWindow *window = SWCURSOR_WINDOW (widget);
 
 	if (window->image) {
 		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
 		cairo_set_source_surface(cr, window->image, 0, 0);
-		cairo_paint(cr);
 
-		if (window->mouse_down) {
-			double x, y, w, h;
-			cairo_clip_extents(cr, &x, &y, &w, &h);
-			cairo_set_source_rgba (cr, 1., 0., 0., 0.25);
-			cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
-			cairo_rectangle(cr, x, y, w, h);
-			cairo_fill(cr);
-		}
+		if (!window->mouse_down) {
+		    cairo_paint(cr);
+        GTK_WIDGET_CLASS (swcursor_window_parent_class)->draw(widget, cr);
+    }
 	}
 
-	GTK_WIDGET_CLASS (swcursor_window_parent_class)->draw(widget, cr);
 }
 
-static void swcursor_window_screen_changed(GtkWidget *widget, GdkScreen *previous_screen)
+static void
+swcursor_window_screen_changed(GtkWidget *widget, GdkScreen *previous_screen)
 {
 	swcursor_window_setup_visuals(widget);
 
 	GTK_WIDGET_CLASS (swcursor_window_parent_class)->screen_changed(widget, previous_screen);
 }
 
-static void swcursor_window_setup_visuals(GtkWidget *widget)
+static void
+swcursor_window_setup_visuals(GtkWidget *widget)
 {
 	GdkScreen *screen;
 	GdkVisual *visual;
@@ -106,7 +104,8 @@ static void swcursor_window_setup_visuals(GtkWidget *widget)
 	}
 }
 
-static void swcursor_window_realize(GtkWidget *widget)
+static void
+swcursor_window_realize(GtkWidget *widget)
 {
 	GTK_WIDGET_CLASS (swcursor_window_parent_class)->realize(widget);
 
@@ -123,7 +122,8 @@ static void swcursor_window_realize(GtkWidget *widget)
 	gdk_window_set_decorations(gdk_window, 0);
 }
 
-static void swcursor_window_map(GtkWidget *widget)
+static void
+swcursor_window_map(GtkWidget *widget)
 {
 	GTK_WIDGET_CLASS (swcursor_window_parent_class)->map(widget);
 
@@ -144,7 +144,8 @@ static void swcursor_window_map(GtkWidget *widget)
 	XDestroyRegion(region);
 }
 
-void swcursor_window_set_image(SWCursorWindow *window, cairo_surface_t *image)
+void
+swcursor_window_set_image(SWCursorWindow *window, cairo_surface_t *image)
 {
 	int imgw, imgh;
 
@@ -161,7 +162,8 @@ cairo_surface_t *swcursor_window_get_image(SWCursorWindow *window)
 	return window->image;
 }
 
-void swcursor_window_set_mouse_down(SWCursorWindow *window, gboolean mouse_down)
+void
+swcursor_window_set_mouse_down(SWCursorWindow *window, gboolean mouse_down)
 {
 	if (window->mouse_down != mouse_down)
 		gtk_widget_queue_draw(GTK_WIDGET (window));

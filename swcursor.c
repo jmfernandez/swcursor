@@ -24,7 +24,8 @@ static gboolean tick(GtkWidget *widget, GdkFrameClock *frame_clock, gpointer use
 
 static State_t* state;
 
-static void cleanup() {
+static void
+cleanup() {
   free(state);
   return;
 }
@@ -49,6 +50,7 @@ int main(int argc, char **argv)
         }
         break;
       case 'r':
+      {
         int rate = atoi(argv[optind]);
         if(rate == 0 || rate > SECOND) {
           fprintf(stdout, "Could not parse: %s, setting default rate to 60", argv[optind]);
@@ -56,6 +58,7 @@ int main(int argc, char **argv)
           state->framerate = SECOND/rate;
         }
         break;
+      }
       case 'h':
           fprintf(stdout, "Usage: %s [-ir] [file...]\n\n-i [file.png]\n load the png file as mouse cursor\n\n-r [number]\nset the refresh rate per seconds\n\nExample:\n./swcursor -i cursors/cursor-large.png -r 120", argv[0]);
           exit(EXIT_SUCCESS);
@@ -79,7 +82,8 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-static cairo_surface_t *load_image(const char *path)
+static cairo_surface_t*
+load_image(const char *path)
 {
 	cairo_surface_t *image = cairo_image_surface_create_from_png(path);
 	if (cairo_surface_status(image) != CAIRO_STATUS_SUCCESS) {
@@ -102,7 +106,8 @@ static void show_main_window(State_t* state)
 	gtk_widget_show_all(GTK_WIDGET (window));
 }
 
-static gboolean tick(GtkWidget *widget, GdkFrameClock *frame_clock, gpointer user_data)
+static gboolean
+tick(GtkWidget *widget, GdkFrameClock *frame_clock, gpointer user_data)
 {
 	static gboolean show_warning = TRUE;
 
