@@ -20,27 +20,7 @@ gdk and xlib.
 ```
 $ make
 $ ./swcursor
-
 ```
 
-```
-Usage: ./swcursor [-ir] [file...]
-
--i [file.png]
- load the png file as mouse cursor
-
--r [number]
-set the refresh rate per seconds
-
-Example:
-./swcursor -i cursors/cursor-large.png -r 12
-```
-
-```
-# A variety of cursors can be found in the cursors folder
-# You can display any transparent PNG image you like for the cursor
-$ ./swcursor cursors/cursor-large.png
-```
-
-For more details see
+For details see
 https://github.com/andykitchen/swcursor
