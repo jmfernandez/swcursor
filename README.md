@@ -1,6 +1,6 @@
 # swcursor
 
-![swcursor example screenshot](cursors/cursor-large.png)
+![swcursor example screenshot](cursor.png)
 
 This is a hack based fork of swcursor to replicate mouse overlays on linux.
 
