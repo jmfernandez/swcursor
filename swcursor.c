@@ -45,13 +45,17 @@ static gboolean tick(GtkWidget* widget, GdkFrameClock* frame_clock, gpointer use
   unsigned int mask;
   gint scale_factor;
   gboolean mouse_down;
+  int w_width, w_height;
+  
   gdk_window = gtk_widget_get_window(widget);
+  w_width = gdk_window_get_width(gdk_window);
+  w_height = gdk_window_get_height(gdk_window);
   xdisplay = GDK_SCREEN_XDISPLAY(gdk_window_get_screen(gdk_window));
   xroot_window = XDefaultRootWindow(xdisplay);
   scale_factor = gdk_window_get_scale_factor(gdk_window);
   if (XQueryPointer(xdisplay, xroot_window, &ret_root, &ret_child, &root_x, &root_y, &win_x, &win_y, &mask)) {
-    move_x = root_x / scale_factor - 63;
-    move_y = root_y / scale_factor - 63;
+    move_x = root_x / scale_factor - w_width / 2 - 1;
+    move_y = root_y / scale_factor - w_width / 2 - 1;
     gtk_window_move(GTK_WINDOW(widget), move_x, move_y);
     mouse_down = (mask & Button1Mask) || (mask & Button2Mask) || (mask & Button3Mask);
     swcursor_window_set_mouse_down(SWCURSOR_WINDOW(widget), mouse_down);
